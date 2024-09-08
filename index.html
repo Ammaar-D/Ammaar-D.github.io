@@ -12,54 +12,76 @@
         height: 100vh;
         margin: 0;
         font-family: Arial, sans-serif;
-        background-image: url(https://img.freepik.com/free-vector/blurred-valentine-s-day-background_52683-32322.jpg?t=st=1725815629~exp=1725819229~hmac=b2dad56e2e7643899d7341a9c5346e6626372c4949ec2db821f3cdf75a843a29&w=996); 
+        background-image: url(https://img.freepik.com/free-vector/blurred-valentine-s-day-background_52683-32322.jpg?t=st=1725815629~exp=1725819229~hmac=b2dad56e2e7643899d7341a9c5346e6626372c4949ec2db821f3cdf75a843a29&w=996); /* Replace with your image URL or path */
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
         position: relative;
     }
     .popup {
-        background: rgba(255, 255, 255, 0.8); 
+        background: rgba(255, 255, 255, 0.8); /* Slightly transparent white background */
         padding: 20px;
         border-radius: 8px;
         box-shadow: 0 0 10px rgba(0,0,0,0.2);
         text-align: center;
         position: relative;
-        z-index: 1;
+        z-index: 1; /* Ensure popup is on top of the background */
     }
-   
-        }
-        .popup button {
-            margin: 10px;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            font-size: 16px;
-            cursor: pointer;
-        }
-        .yes {
-            background-color: #4CAF50;
-            color: white;
-        }
-        .no {
-            background-color: #f44336;
-            color: white;
-        }
+    .popup button {
+        margin: 10px;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+    }
+    .yes {
+        background-color: #4CAF50;
+        color: white;
+    }
+    .no {
+        background-color: #f44336;
+        color: white;
+        position: absolute;
+    }
     </style>
 </head>
 <body>
-    <div class="popup">
+    <div class="popup" id="popup">
         <h2>Hey, I thought this would be a fun way to ask!</h2>
-        <p>But would you like to go on a date this upcoming weekend? (</p>
+        <p>But would you like to go on a date this upcoming weekend?</p>
         <button class="yes" onclick="handleResponse('yes')">Yes</button>
-        <button class="no" onclick="handleResponse('no')">No</button>
+        <button class="no" id="noButton" onclick="handleResponse('no')">No</button>
     </div>
+
     <script>
+        let noClickCount = 0;
+
         function handleResponse(response) {
+            const popup = document.getElementById('popup');
+            const noButton = document.getElementById('noButton');
+
             if (response === 'yes') {
-                alert('Great! I am looking forward to it.');
+                // Replace the popup content with date details
+                popup.innerHTML = `
+                    <h2>Great! Here are the details for our date:</h2>
+                    <p>Date: This weekend</p>
+                    <p>Location: Your favorite cafe</p>
+                    <p>Time: 7 PM</p>
+                    <p>Looking forward to it!</p>
+                `;
             } else {
-                alert('No worries! Maybe another time.');
+                noClickCount++;
+                if (noClickCount < 3) {
+                    // Move the "No" button to a random location
+                    const randomX = Math.random() * (window.innerWidth - noButton.offsetWidth);
+                    const randomY = Math.random() * (window.innerHeight - noButton.offsetHeight);
+                    noButton.style.left = randomX + 'px';
+                    noButton.style.top = randomY + 'px';
+                } else {
+                    // On the third click, stop moving and show the "No worries" message
+                    popup.innerHTML = '<h2>No worries, that is fine!</h2>';
+                }
             }
         }
     </script>
